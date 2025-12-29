@@ -3,16 +3,23 @@ fuego version 14
 
 ## Setup
 
+### Installation
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
 ### Environment Variables
 
 This application uses environment variables to store sensitive configuration data, including API keys.
 
-1. Copy the example environment file:
+2. Copy the example environment file:
    ```bash
    cp .env.example .env
    ```
 
-2. Edit `.env` and replace the placeholder values with your actual keys:
+3. Edit `.env` and replace the placeholder values with your actual keys:
    - `SUPABASE_URL`: Your Supabase project URL
    - `SUPABASE_PUBLISHABLE_KEY`: Your Supabase publishable key
 

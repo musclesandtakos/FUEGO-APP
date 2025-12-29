@@ -1,0 +1,19 @@
+{
+  "name": "fuego-app",
+  "version": "14.0.0",
+  "description": "FUEGO-APP with secure environment variable configuration",
+  "main": "config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "supabase",
+    "environment",
+    "configuration"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
