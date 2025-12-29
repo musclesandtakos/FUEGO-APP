@@ -23,7 +23,7 @@ jobs:
         if: always()
         run: |
           echo "Findings summary (rule id, file, commit, severity):"
-          jq -r '.[] | "\(.rule_id) \(.file) \(.commit) \(.severity)"' gitleaks-report.json | sed 's/".*"/[REDACTED]/g' || echo "No findings or jq not installed"
+          jq -r '.[] | "\(.rule_id) | \(.file) | \(.commit) | \(.severity)"' gitleaks-report.json || echo "No findings or jq not installed"
 
       - name: Upload gitleaks JSON report
         if: always()
