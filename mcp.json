@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "ai-elements": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://registry.ai-sdk.dev/api/mcp"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/project"]
+    }
+  }
+}
