@@ -56,7 +56,7 @@ const ChatBotDemo = () => {
   const { messages, append, status, reload } = useChat();
 
   const handleSubmit = (message: PromptInputMessage) => {
-    const hasText = Boolean(message.text);
+    const hasText = Boolean(message.text?.trim());
     const hasAttachments = Boolean(message.files?.length);
 
     if (!(hasText || hasAttachments)) {

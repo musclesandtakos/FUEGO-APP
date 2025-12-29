@@ -184,7 +184,7 @@ export function PromptInputSubmit({ className, status, ...props }: PromptInputSu
       onClick={onSubmit}
       className={cn('rounded-full', className)}
       size="icon"
-      disabled={!message.text && !message.files?.length}
+      disabled={!message.text?.trim() && !message.files?.length}
       {...props}
     >
       {status === 'streaming' || status === 'submitted' ? (
