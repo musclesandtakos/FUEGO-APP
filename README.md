@@ -5,21 +5,19 @@ fuego version 14
 
 ### Environment Variables
 
-This application requires environment variables to be configured. 
+This application uses environment variables to store sensitive configuration data, including API keys.
 
-1. Copy the `.env.example` file to `.env`:
+1. Copy the example environment file:
    ```bash
    cp .env.example .env
    ```
 
-2. Update the `.env` file with your actual API keys:
-   - `AI_GATEWAY_API_KEY`: Your AI Gateway API key
+2. Edit `.env` and replace the placeholder values with your actual keys:
+   - `SUPABASE_URL`: Your Supabase project URL
+   - `SUPABASE_PUBLISHABLE_KEY`: Your Supabase publishable key
 
-**Important**: Never commit your `.env` file or expose API keys in the repository. The `.env` file is already included in `.gitignore`.
+**Important**: Never commit your `.env` file to version control. It is already included in `.gitignore`.
 
-## Security
+### Security Note
 
-- All API keys and secrets must be stored in environment variables
-- Use the `.env.example` file as a template
-- Never commit actual API keys to the repository
-- If an API key is accidentally exposed, revoke it immediately and generate a new one
+API keys and other sensitive credentials should always be stored in environment variables and never hardcoded in the source code or committed to the repository.
