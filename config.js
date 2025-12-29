@@ -26,8 +26,8 @@ if (!config.supabase.publishableKey) {
                        'Please copy .env.example to .env and add your Supabase key';
   
   if (process.env.NODE_ENV === 'production') {
-
-  throw new Error(errorMessage);
+    throw new Error(errorMessage);
+  }
 }
 
 module.exports = config;
