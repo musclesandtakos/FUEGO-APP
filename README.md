@@ -1,2 +1,22 @@
 # FUEGO-APP
 fuego version 14
+
+## Setup
+
+### Environment Variables
+
+This application uses environment variables to store sensitive configuration data, including API keys.
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` and replace the placeholder values with your actual keys:
+   - `SUPABASE_PUBLISHABLE_KEY`: Your Supabase publishable key
+
+**Important**: Never commit your `.env` file to version control. It is already included in `.gitignore`.
+
+### Security Note
+
+API keys and other sensitive credentials should always be stored in environment variables and never hardcoded in the source code or committed to the repository.
