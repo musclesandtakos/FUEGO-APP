@@ -7,7 +7,7 @@
 
 // Example: Loading environment variables
 // In a Node.js app, you would use dotenv:
-// require('dotenv').config();
+require('dotenv').config();
 
 // Example: Accessing the Supabase publishable key from environment variables
 const config = {
