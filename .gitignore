@@ -78,3 +78,7 @@ build-info/
 .local/
 .secret
 .credentials
+
+# Gitleaks reports
+gitleaks-report.json
+gitleaks*.json
