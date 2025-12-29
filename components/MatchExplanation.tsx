@@ -5,6 +5,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   profileAName: string, profileALikes: string[], profileBName: string, profileBLikes: string[]
 }) {
   const [text, setText] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -34,23 +35,35 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
           throw new Error('No response body')
         }
 
+        let buffer = ''
+
         while (true) {
           const { done, value } = await reader.read()
           if (done || cancelled) break
 
-          const chunk = decoder.decode(value, { stream: true })
-          const lines = chunk.split('\n\n')
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          
+          // Keep the last incomplete line in the buffer
+          buffer = lines.pop() || ''
 
           for (const line of lines) {
             if (line.startsWith('data: ')) {
-              const data = JSON.parse(line.slice(6))
-              setText((t) => t + data.chunk)
+              try {
+                const data = JSON.parse(line.slice(6))
+                if (data.content) {
+                  setText((t) => t + data.content)
+                }
+              } catch (e) {
+                // Skip malformed JSON
+                console.warn('Failed to parse SSE data:', line)
+              }
             }
           }
         }
       } catch (e) {
         console.error(e)
-        setText('Error generating explanation')
+        setError('Error generating explanation')
       }
     })()
 
@@ -60,7 +73,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   return (
     <div>
       <h3>Why this is a match</h3>
-      <div>{text || 'Generating...'}</div>
+      <div>{error || text || 'Generating...'}</div>
     </div>
   )
 }

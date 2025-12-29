@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { streamText } from 'ai'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -21,25 +20,75 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `Keep the tone positive and mention common interests.`
     ].join('\n\n')
 
-    const model = process.env.GPT_MODEL || 'openai/gpt-4'
+    const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.OPENAI_API_KEY
+    const model = process.env.GPT_MODEL || 'gpt-4'
 
-    const stream = await streamText({
-      model,
-      prompt
+    if (!apiKey) {
+      return res.status(500).json({ error: 'API key not configured' })
+    }
+
+    // Call OpenAI API with streaming
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: prompt }],
+        stream: true
+      })
     })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('OpenAI API error:', errorText)
+      return res.status(500).json({ error: 'Failed to generate explanation' })
+    }
 
     // Set headers for streaming response
     res.setHeader('Content-Type', 'text/event-stream')
     res.setHeader('Cache-Control', 'no-cache')
     res.setHeader('Connection', 'keep-alive')
 
-    for await (const chunk of stream) {
-      res.write(`data: ${JSON.stringify({ chunk })}\n\n`)
+    const reader = response.body?.getReader()
+    const decoder = new TextDecoder()
+
+    if (!reader) {
+      return res.status(500).json({ error: 'No response stream' })
+    }
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      const chunk = decoder.decode(value, { stream: true })
+      const lines = chunk.split('\n').filter(line => line.trim() !== '')
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6)
+          if (data === '[DONE]') continue
+
+          try {
+            const parsed = JSON.parse(data)
+            const content = parsed.choices?.[0]?.delta?.content
+            if (content) {
+              res.write(`data: ${JSON.stringify({ content })}\n\n`)
+            }
+          } catch (e) {
+            // Skip malformed JSON
+          }
+        }
+      }
     }
 
     res.end()
   } catch (err: any) {
     console.error('Error in match-explanation:', err)
-    return res.status(500).json({ error: err.message || String(err) })
+    if (!res.headersSent) {
+      return res.status(500).json({ error: err.message || String(err) })
+    }
   }
 }
