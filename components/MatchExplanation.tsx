@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { streamText } from 'ai'
 
 export default function MatchExplanation({ profileAName, profileALikes, profileBName, profileBLikes }: {
   profileAName: string, profileALikes: string[], profileBName: string, profileBLikes: string[]
@@ -18,19 +17,12 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
         `Keep the tone positive and mention common interests.`
       ].join('\n\n')
 
-      const stream = await streamText({
-        model: process.env.NEXT_PUBLIC_GPT_MODEL || 'openai/gpt-5',
-        prompt
-      })
-
-      try {
-        for await (const chunk of stream) {
-          if (cancelled) break
-          setText((t) => t + chunk)
-        }
-      } catch (e) {
-        console.error(e)
-      }
+      // Simple implementation without streaming for now
+      // In a real implementation, you would call an API endpoint that handles the AI request
+      setText('Match explanation will be generated via AI when properly configured with API endpoints.')
+      
+      // TODO: Implement streaming with proper AI SDK setup
+      // This requires setting up an API route that handles the AI request
     })()
 
     return () => { cancelled = true }
