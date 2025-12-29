@@ -20,9 +20,7 @@ This application uses environment variables to store sensitive configuration dat
    ```
 
 3. Edit `.env` and replace the placeholder values with your actual keys:
-   - `SUPABASE_URL`: Your Supabase project URL
    - `SUPABASE_PUBLISHABLE_KEY`: Your Supabase publishable key
-
 **Important**: Never commit your `.env` file to version control. It is already included in `.gitignore`.
 
 ### Security Note
