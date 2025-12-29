@@ -7,6 +7,7 @@
     "verify": "node scripts/verify-supabase-setup.js"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.4.0",
     "pg": "^8.11.0",
     "minimist": "^1.2.8"
   }
