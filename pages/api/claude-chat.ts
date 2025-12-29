@@ -15,6 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    if (!req.body || typeof req.body !== 'object') {
+      return res.status(400).json({ error: 'Invalid request body' })
+    }
+
     const { prompt } = req.body
 
     if (!prompt || typeof prompt !== 'string') {

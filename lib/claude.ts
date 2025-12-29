@@ -86,5 +86,9 @@ export async function getClaudeCompletion(
     maxTokens
   )
 
+  if (!response.content || response.content.length === 0) {
+    throw new Error('Claude API returned empty response')
+  }
+
   return response.content[0].text
 }
