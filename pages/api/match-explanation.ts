@@ -42,8 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error('OpenAI API error:', errorText)
+      console.error('OpenAI API error: Status', response.status)
       return res.status(500).json({ error: 'Failed to generate explanation' })
     }
 
@@ -59,12 +58,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: 'No response stream' })
     }
 
+    let buffer = ''
+
     while (true) {
       const { done, value } = await reader.read()
       if (done) break
 
-      const chunk = decoder.decode(value, { stream: true })
-      const lines = chunk.split('\n')
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      
+      // Keep the last incomplete line in the buffer
+      buffer = lines.pop() || ''
 
       for (const line of lines) {
         if (line.startsWith('data: ')) {

@@ -55,7 +55,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
                   setText((t) => t + data.content)
                 }
               } catch (e) {
-                // Skip malformed JSON in production, log in development
+                // Skip malformed JSON
               }
             }
           }
