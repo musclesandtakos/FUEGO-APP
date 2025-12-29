@@ -13,7 +13,7 @@
 const config = {
   supabase: {
     // NEVER hardcode API keys like this:
-    // publishableKey: 'sb_publishable_uHfx45L8q6zISjGuKWrwVg_lK_adeod'
+    // publishableKey: 'sb_your_actual_key_here'
     
     // ALWAYS use environment variables:
     publishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || '',
@@ -22,8 +22,14 @@ const config = {
 
 // Validate that required environment variables are set
 if (!config.supabase.publishableKey) {
-  console.error('Error: SUPABASE_PUBLISHABLE_KEY is not set in environment variables');
-  console.error('Please copy .env.example to .env and add your Supabase key');
+  const errorMessage = 'Error: SUPABASE_PUBLISHABLE_KEY is not set in environment variables.\n' +
+                       'Please copy .env.example to .env and add your Supabase key';
+  
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(errorMessage);
+  } else {
+    console.error(errorMessage);
+  }
 }
 
 module.exports = config;
