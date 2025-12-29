@@ -1,6 +1,16 @@
-import { streamText, type UIMessage, convertToModelMessages } from 'ai';
+// NOTE: This is a placeholder API route that demonstrates the structure.
+// To make this functional, you need to:
+// 1. Install a provider package like @ai-sdk/openai, @ai-sdk/anthropic, etc.
+// 2. Configure your API keys in environment variables
+// 3. Import and use actual model instances
 
-// Allow streaming responses up to 30 seconds
+// Example for OpenAI:
+// import { openai } from '@ai-sdk/openai';
+// const result = streamText({
+//   model: openai('gpt-4o'),
+//   ...
+// });
+
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
@@ -9,21 +19,25 @@ export async function POST(req: Request) {
     model,
     webSearch,
   }: { 
-    messages: UIMessage[]; 
+    messages: any[]; 
     model: string; 
     webSearch: boolean;
   } = await req.json();
 
-  const result = streamText({
-    model: webSearch ? 'perplexity/sonar' : model,
-    messages: convertToModelMessages(messages),
-    system:
-      'You are a helpful assistant that can answer questions and help with tasks',
-  });
-
-  // send sources and reasoning back to the client
-  return result.toUIMessageStreamResponse({
-    sendSources: true,
-    sendReasoning: true,
-  });
+  // This is a placeholder response
+  // In production, you would use the actual AI SDK with configured providers
+  return new Response(
+    JSON.stringify({
+      error: 'Please configure an AI provider. See app/api/chat/route.ts for instructions.',
+      providedModel: model,
+      webSearch: webSearch,
+      messageCount: messages.length
+    }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      status: 501, // Not Implemented
+    }
+  );
 }

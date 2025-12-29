@@ -33,20 +33,9 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from '@/components/ai-elements/prompt-input';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { CopyIcon, GlobeIcon, RefreshCcwIcon } from 'lucide-react';
-import {
-  Source,
-  Sources,
-  SourcesContent,
-  SourcesTrigger,
-} from '@/components/ai-elements/sources';
-import {
-  Reasoning,
-  ReasoningContent,
-  ReasoningTrigger,
-} from '@/components/ai-elements/reasoning';
 import { Loader } from '@/components/ai-elements/loader';
 
 const models = [
@@ -64,7 +53,7 @@ const ChatBotDemo = () => {
   const [input, setInput] = useState('');
   const [model, setModel] = useState<string>(models[0].value);
   const [webSearch, setWebSearch] = useState(false);
-  const { messages, sendMessage, status, regenerate } = useChat();
+  const { messages, append, status, reload } = useChat();
 
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);
@@ -74,10 +63,10 @@ const ChatBotDemo = () => {
       return;
     }
 
-    sendMessage(
+    append(
       { 
-        text: message.text || 'Sent with attachments',
-        files: message.files 
+        role: 'user',
+        content: message.text || 'Sent with attachments',
       },
       {
         body: {
@@ -95,73 +84,31 @@ const ChatBotDemo = () => {
         <Conversation className="h-full">
           <ConversationContent>
             {messages.map((message) => (
-              <div key={message.id}>
-                {message.role === 'assistant' && message.parts.filter((part) => part.type === 'source-url').length > 0 && (
-                  <Sources>
-                    <SourcesTrigger
-                      count={
-                        message.parts.filter(
-                          (part) => part.type === 'source-url',
-                        ).length
+              <Message key={message.id} from={message.role}>
+                <MessageContent>
+                  <MessageResponse>
+                    {message.content}
+                  </MessageResponse>
+                </MessageContent>
+                {message.role === 'assistant' && (
+                  <MessageActions>
+                    <MessageAction
+                      onClick={() => reload()}
+                      label="Retry"
+                    >
+                      <RefreshCcwIcon className="size-3" />
+                    </MessageAction>
+                    <MessageAction
+                      onClick={() =>
+                        navigator.clipboard.writeText(message.content)
                       }
-                    />
-                    {message.parts.filter((part) => part.type === 'source-url').map((part, i) => (
-                      <SourcesContent key={`${message.id}-${i}`}>
-                        <Source
-                          key={`${message.id}-${i}`}
-                          href={part.url}
-                          title={part.url}
-                        />
-                      </SourcesContent>
-                    ))}
-                  </Sources>
+                      label="Copy"
+                    >
+                      <CopyIcon className="size-3" />
+                    </MessageAction>
+                  </MessageActions>
                 )}
-                {message.parts.map((part, i) => {
-                  switch (part.type) {
-                    case 'text':
-                      return (
-                        <Message key={`${message.id}-${i}`} from={message.role}>
-                          <MessageContent>
-                            <MessageResponse>
-                              {part.text}
-                            </MessageResponse>
-                          </MessageContent>
-                          {message.role === 'assistant' && i === messages.length - 1 && (
-                            <MessageActions>
-                              <MessageAction
-                                onClick={() => regenerate()}
-                                label="Retry"
-                              >
-                                <RefreshCcwIcon className="size-3" />
-                              </MessageAction>
-                              <MessageAction
-                                onClick={() =>
-                                  navigator.clipboard.writeText(part.text)
-                                }
-                                label="Copy"
-                              >
-                                <CopyIcon className="size-3" />
-                              </MessageAction>
-                            </MessageActions>
-                          )}
-                        </Message>
-                      );
-                    case 'reasoning':
-                      return (
-                        <Reasoning
-                          key={`${message.id}-${i}`}
-                          className="w-full"
-                          isStreaming={status === 'streaming' && i === message.parts.length - 1 && message.id === messages.at(-1)?.id}
-                        >
-                          <ReasoningTrigger />
-                          <ReasoningContent>{part.text}</ReasoningContent>
-                        </Reasoning>
-                      );
-                    default:
-                      return null;
-                  }
-                })}
-              </div>
+              </Message>
             ))}
             {status === 'submitted' && <Loader />}
           </ConversationContent>

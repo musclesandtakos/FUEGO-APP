@@ -4,7 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
-  from: 'user' | 'assistant';
+  from: 'user' | 'assistant' | 'system' | 'data';
   children: React.ReactNode;
 }
 

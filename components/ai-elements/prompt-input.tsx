@@ -15,7 +15,7 @@ export interface PromptInputMessage {
 interface PromptInputContextValue {
   message: PromptInputMessage;
   setMessage: React.Dispatch<React.SetStateAction<PromptInputMessage>>;
-  onSubmit: (message: PromptInputMessage) => void;
+  onSubmit: () => void;
   fileInputRef: React.RefObject<HTMLInputElement>;
   globalDrop?: boolean;
   multiple?: boolean;
@@ -31,7 +31,7 @@ const usePromptInputContext = () => {
   return context;
 };
 
-interface PromptInputProps extends React.HTMLAttributes<HTMLDivElement> {
+interface PromptInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
   onSubmit: (message: PromptInputMessage) => void;
   globalDrop?: boolean;
   multiple?: boolean;
