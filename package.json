@@ -1,0 +1,13 @@
+{
+  "name": "supabase-sql-runner",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "migrate": "node scripts/run-sql.js",
+    "verify": "node scripts/verify-supabase-setup.js"
+  },
+  "dependencies": {
+    "pg": "^8.11.0",
+    "minimist": "^1.2.8"
+  }
+}
