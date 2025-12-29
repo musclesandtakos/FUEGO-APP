@@ -159,7 +159,7 @@ const ChatBotDemo = () => {
                 </PromptInputSelectContent>
               </PromptInputSelect>
             </PromptInputTools>
-            <PromptInputSubmit disabled={!input && !status} status={status} />
+            <PromptInputSubmit status={status} />
           </PromptInputFooter>
         </PromptInput>
       </div>
