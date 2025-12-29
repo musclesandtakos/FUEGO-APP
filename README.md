@@ -14,6 +14,7 @@ This application requires environment variables to be configured.
 
 2. Update the `.env` file with your actual API keys:
    - `AI_GATEWAY_API_KEY`: Your AI Gateway API key
+   - `ANTHROPIC_API_KEY`: Your Anthropic Claude API key (get from https://console.anthropic.com/)
 
 **Important**: Never commit your `.env` file or expose API keys in the repository. The `.env` file is already included in `.gitignore`.
 

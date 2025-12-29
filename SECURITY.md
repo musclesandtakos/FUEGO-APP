@@ -39,3 +39,9 @@ If you discover a security vulnerability, please report it by creating a private
   - This key should be obtained from your AI Gateway provider
   - Format: `vck_` followed by alphanumeric characters
   - Keep this key confidential and never share it publicly
+
+- `ANTHROPIC_API_KEY`: Your Anthropic Claude API key (optional)
+  - This key should be obtained from https://console.anthropic.com/
+  - Format: `sk-ant-api03-` followed by alphanumeric characters and hyphens
+  - Keep this key confidential and never share it publicly
+  - If this key is exposed, revoke it immediately from the Anthropic console
