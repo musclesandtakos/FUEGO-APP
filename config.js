@@ -29,6 +29,8 @@ if (!config.supabase.publishableKey) {
     throw new Error(errorMessage);
   } else {
     console.error(errorMessage);
+    // In non-production, use an explicit placeholder to avoid an empty key
+    config.supabase.publishableKey = 'SUPABASE_PUBLISHABLE_KEY_MISSING_DEVELOPMENT';
   }
 }
 
