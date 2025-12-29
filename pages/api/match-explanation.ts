@@ -64,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (done) break
 
       const chunk = decoder.decode(value, { stream: true })
-      const lines = chunk.split('\n').filter(line => line.trim() !== '')
+      const lines = chunk.split('\n')
 
       for (const line of lines) {
         if (line.startsWith('data: ')) {
@@ -85,10 +85,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     res.end()
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Error in match-explanation:', err)
     if (!res.headersSent) {
-      return res.status(500).json({ error: err.message || String(err) })
+      const message = err instanceof Error ? err.message : String(err)
+      return res.status(500).json({ error: message })
     }
   }
 }

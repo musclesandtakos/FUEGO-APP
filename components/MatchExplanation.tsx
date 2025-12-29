@@ -55,8 +55,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
                   setText((t) => t + data.content)
                 }
               } catch (e) {
-                // Skip malformed JSON
-                console.warn('Failed to parse SSE data:', line)
+                // Skip malformed JSON in production, log in development
               }
             }
           }
