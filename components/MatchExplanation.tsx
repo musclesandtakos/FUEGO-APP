@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { streamText } from 'ai'
 
 export default function MatchExplanation({ profileAName, profileALikes, profileBName, profileBLikes }: {
   profileAName: string, profileALikes: string[], profileBName: string, profileBLikes: string[]
@@ -10,26 +9,48 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const prompt = [
-        `You are a friendly match assistant.`,
-        `Explain in 2-3 short paragraphs why ${profileAName} and ${profileBName} would be a good match based on these likes:`,
-        `${profileAName}: ${profileALikes.join(', ')}`,
-        `${profileBName}: ${profileBLikes.join(', ')}`,
-        `Keep the tone positive and mention common interests.`
-      ].join('\n\n')
-
-      const stream = await streamText({
-        model: process.env.NEXT_PUBLIC_GPT_MODEL || 'openai/gpt-5',
-        prompt
-      })
-
       try {
-        for await (const chunk of stream) {
-          if (cancelled) break
-          setText((t) => t + chunk)
+        const response = await fetch('/api/match-explanation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            profileAName,
+            profileALikes,
+            profileBName,
+            profileBLikes
+          })
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch match explanation')
+        }
+
+        const reader = response.body?.getReader()
+        const decoder = new TextDecoder()
+
+        if (!reader) {
+          throw new Error('No response body')
+        }
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done || cancelled) break
+
+          const chunk = decoder.decode(value, { stream: true })
+          const lines = chunk.split('\n\n')
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = JSON.parse(line.slice(6))
+              setText((t) => t + data.chunk)
+            }
+          }
         }
       } catch (e) {
         console.error(e)
+        setText('Error generating explanation')
       }
     })()
 
