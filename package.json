@@ -1,19 +1,13 @@
 {
-  "name": "fuego-app",
-  "version": "14.0.0",
-  "description": "FUEGO-APP with secure environment variable configuration",
-  "main": "config.js",
+  "name": "supabase-sql-runner",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrate": "node scripts/run-sql.js",
+    "verify": "node scripts/verify-supabase-setup.js"
   },
-  "keywords": [
-    "supabase",
-    "environment",
-    "configuration"
-  ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "pg": "^8.11.0",
+    "minimist": "^1.2.8"
   }
 }
