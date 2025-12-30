@@ -17,6 +17,7 @@ const sqlDir = path.resolve(process.cwd(), 'sql')
 
 // Ordered SQL files to run
 const files = [
+  'all_migrations_combined.sql',
   'pgvector_setup.sql',
   'migrate_jsonb_to_float8_array.sql',
   'create_cosine_and_rpc.sql',

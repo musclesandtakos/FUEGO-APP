@@ -4,10 +4,13 @@
   "type": "module",
   "scripts": {
     "migrate": "node scripts/run-sql.js",
-    "verify": "node scripts/verify-supabase-setup.js"
+    "verify": "node scripts/verify-supabase-setup.js",
+    "verify-rls": "node scripts/verify-rls-and-rpc.js",
+    "populate-userid": "node scripts/populate-userid-from-mapping.js"
   },
   "dependencies": {
     "pg": "^8.11.0",
-    "minimist": "^1.2.8"
+    "minimist": "^1.2.8",
+    "node-fetch": "^3.3.0"
   }
 }
