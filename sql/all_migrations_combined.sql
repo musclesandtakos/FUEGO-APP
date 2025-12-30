@@ -113,8 +113,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
--- ========================================
 -- 7. Create find_matches_cursor RPC (cursor-based)
+-- Note: UUID comparison for tiebreaking is lexicographic and stable for pagination,
+-- but consider adding a created_at or sequence column for more intuitive ordering
 -- ========================================
 CREATE OR REPLACE FUNCTION find_matches_cursor(
   p_profile_id uuid,
@@ -150,7 +151,7 @@ BEGIN
     FROM scored
     WHERE
       p_cursor_score IS NULL
-      OR (score < p_cursor_score OR (score = p_cursor_score AND match_id > p_cursor_id))
+      OR (score < p_cursor_score OR (score = p_cursor_score AND match_id < p_cursor_id))
   )
   SELECT match_id, name, likes_text, score
   FROM filtered
