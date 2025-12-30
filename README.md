@@ -39,9 +39,6 @@ This application requires environment variables to be configured.
    **OpenAI Configuration:**
    - `OPENAI_API_KEY`: Your OpenAI API key
    - `OPENAI_EMBEDDING_MODEL`: The embedding model to use (default: `text-embedding-3-small`)
-   
-   **Next.js Configuration:**
-   - `NEXT_PUBLIC_GPT_MODEL`: The GPT model for match explanations (e.g., `openai/gpt-4`)
 
 **Important**: Never commit your `.env` file or expose API keys in the repository. The `.env` file is already included in `.gitignore`.
 
