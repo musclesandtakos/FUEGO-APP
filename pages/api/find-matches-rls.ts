@@ -54,6 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Call Supabase REST RPC with user's JWT
+    // Note: fetch is available globally in Next.js 13+ and Node.js 18+
     const rpcUrl = `${supabaseUrl}/rest/v1/rpc/find_matches_cursor`
     const response = await fetch(rpcUrl, {
       method: 'POST',

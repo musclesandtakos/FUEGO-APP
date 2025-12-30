@@ -150,7 +150,7 @@ BEGIN
     FROM scored
     WHERE
       p_cursor_score IS NULL
-      OR (score < p_cursor_score OR (score = p_cursor_score AND match_id < p_cursor_id))
+      OR (score < p_cursor_score OR (score = p_cursor_score AND match_id > p_cursor_id))
   )
   SELECT match_id, name, likes_text, score
   FROM filtered
