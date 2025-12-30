@@ -127,17 +127,20 @@ The application uses the following environment variables:
 
 **AI Services:**
 - `ANTHROPIC_API_KEY`: For Claude API integration (required for Claude features in `lib/claude.ts`)
-- `OPENAI_API_KEY`: For OpenAI API integration (required for embeddings in `lib/embeddings.ts`)
+- `OPENAI_API_KEY`: For OpenAI API integration (required for embeddings in `lib/embeddings.ts` - not in `.env.example`, add if needed)
 - `AI_GATEWAY_API_KEY`: Alternative to `OPENAI_API_KEY` for match explanations (used in `pages/api/match-explanation.ts`)
 - `GPT_MODEL`: OpenAI model to use (optional, default: gpt-4)
 - `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings (optional, default: text-embedding-3-small)
 
 **Database:**
-- `SUPABASE_URL`: Supabase project URL (required)
-- `SUPABASE_KEY`: Supabase anon/public key (used in `lib/supabase.ts`)
-- `SUPABASE_PUBLISHABLE_KEY`: Alternative name for Supabase public key (used in `config.js`)
-- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key for admin operations (required for `secure-find-matches` endpoint)
-- `DATABASE_URL` or `SUPABASE_DB_URL`: Direct PostgreSQL connection string (required for running migrations via `npm run migrate`)
+- `SUPABASE_URL`: Supabase project URL (required - not in `.env.example`, add if needed)
+- `SUPABASE_KEY`: Supabase anon/public key (used in `lib/supabase.ts` - not in `.env.example`, add if needed)
+- `SUPABASE_PUBLISHABLE_KEY`: Alternative name for Supabase public key (used in `config.js` - not in `.env.example`, add if needed)
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key for admin operations (required for `secure-find-matches` endpoint - not in `.env.example`, add if needed)
+- `DATABASE_URL`: Direct PostgreSQL connection string (preferred for migrations via `npm run migrate` - not in `.env.example`, add if needed)
+- `SUPABASE_DB_URL`: Alternative to `DATABASE_URL` for migrations (fallback option)
+
+**Note**: The `.env.example` file only includes `AI_GATEWAY_API_KEY` and `ANTHROPIC_API_KEY`. Add other environment variables to your `.env` file as needed for the features you're using.
 
 Always verify required environment variables are set before using them and throw clear errors if missing.
 
