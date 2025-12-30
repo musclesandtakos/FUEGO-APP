@@ -3,20 +3,24 @@ fuego version 14
 
 ## Setup
 
-### Environment Variables
+### Environment variables
 
-This application requires environment variables to be configured. 
+This project uses environment variables for database connections, API keys, and other secrets.
 
-1. Copy the `.env.example` file to `.env`:
+To get started locally:
+
+1. Copy the example file:
    ```bash
-   cp .env.example .env
+   cp .env.example .env.local
    ```
 
-2. Update the `.env` file with your actual API keys:
-   - `AI_GATEWAY_API_KEY`: Your AI Gateway API key
-   - `ANTHROPIC_API_KEY`: Your Anthropic Claude API key (get from https://console.anthropic.com/)
+2. Edit `.env.local` and replace the `REPLACE_WITH_*` placeholders with your real credentials (for example, your database password or Supabase keys).
 
-**Important**: Never commit your `.env` file or expose API keys in the repository. The `.env` file is already included in `.gitignore`.
+3. Keep `.env.local` out of version control — it should never be committed. The repository provides `.env.example` with placeholders so contributors know what keys are required.
+
+Notes:
+- For production and CI, add environment variables using your host's secret management (Vercel, Netlify, GitHub Actions Secrets, etc.).
+- If you use a Postgres database with Prisma, set `DATABASE_URL` in `.env.local` before running migrations.
 
 ## Features
 
