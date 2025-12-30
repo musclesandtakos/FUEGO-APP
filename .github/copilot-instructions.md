@@ -126,16 +126,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 The application uses the following environment variables:
 
 **AI Services:**
-- `ANTHROPIC_API_KEY`: For Claude API integration (optional)
-- `OPENAI_API_KEY` or `AI_GATEWAY_API_KEY`: For OpenAI API integration
-- `GPT_MODEL`: OpenAI model to use (default: gpt-4)
-- `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings
+- `ANTHROPIC_API_KEY`: For Claude API integration (required for Claude features in `lib/claude.ts`)
+- `OPENAI_API_KEY` or `AI_GATEWAY_API_KEY`: For OpenAI API integration (required for match explanations and embeddings)
+- `GPT_MODEL`: OpenAI model to use (optional, default: gpt-4)
+- `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings (optional)
 
 **Database:**
-- `SUPABASE_URL`: Supabase project URL
-- `SUPABASE_KEY` or `SUPABASE_PUBLISHABLE_KEY`: Supabase public/anon key
-- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key (for admin operations)
-- `DATABASE_URL` or `SUPABASE_DB_URL`: Direct PostgreSQL connection string for migrations
+- `SUPABASE_URL`: Supabase project URL (required)
+- `SUPABASE_KEY`: Supabase anon/public key (used in `lib/supabase.ts`)
+- `SUPABASE_PUBLISHABLE_KEY`: Alternative name for Supabase public key (used in `config.js`)
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key for admin operations (required for `secure-find-matches` endpoint)
+- `DATABASE_URL` or `SUPABASE_DB_URL`: Direct PostgreSQL connection string (required for running migrations via `npm run migrate`)
 
 Always verify required environment variables are set before using them and throw clear errors if missing.
 
