@@ -127,9 +127,10 @@ The application uses the following environment variables:
 
 **AI Services:**
 - `ANTHROPIC_API_KEY`: For Claude API integration (required for Claude features in `lib/claude.ts`)
-- `OPENAI_API_KEY` or `AI_GATEWAY_API_KEY`: For OpenAI API integration (required for match explanations and embeddings)
+- `OPENAI_API_KEY`: For OpenAI API integration (required for embeddings in `lib/embeddings.ts`)
+- `AI_GATEWAY_API_KEY`: Alternative to `OPENAI_API_KEY` for match explanations (used in `pages/api/match-explanation.ts`)
 - `GPT_MODEL`: OpenAI model to use (optional, default: gpt-4)
-- `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings (optional)
+- `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings (optional, default: text-embedding-3-small)
 
 **Database:**
 - `SUPABASE_URL`: Supabase project URL (required)
@@ -155,11 +156,13 @@ Always verify required environment variables are set before using them and throw
 
 ### OpenAI API Integration
 
-- Used in `pages/api/match-explanation.ts` for streaming responses
-- Supports both `OPENAI_API_KEY` and `AI_GATEWAY_API_KEY` environment variables
-- Default model from `GPT_MODEL` env var (default: gpt-4)
-- Implements Server-Sent Events (SSE) for streaming
-- Use for embeddings via `lib/embeddings.ts`
+- Used in `pages/api/match-explanation.ts` for streaming match explanations
+- Used in `lib/embeddings.ts` for generating vector embeddings
+- Match explanations support both `OPENAI_API_KEY` and `AI_GATEWAY_API_KEY` environment variables
+- Embeddings require `OPENAI_API_KEY` specifically
+- Default model from `GPT_MODEL` env var (default: gpt-4) for chat completions
+- Default embedding model from `OPENAI_EMBEDDING_MODEL` (default: text-embedding-3-small)
+- Implements Server-Sent Events (SSE) for streaming in match-explanation endpoint
 
 ### Choosing Between APIs
 
