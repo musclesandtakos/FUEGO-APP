@@ -123,14 +123,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 ### API Key Management
 
-The application uses the following API keys:
-- `ANTHROPIC_API_KEY`: For Claude API integration
-- `AI_GATEWAY_API_KEY`: For AI Gateway services
-- `SUPABASE_URL` and `SUPABASE_KEY`: For Supabase database access
+The application uses the following environment variables:
 
-Always verify these are set before using them and throw clear errors if missing.
+**AI Services:**
+- `ANTHROPIC_API_KEY`: For Claude API integration (optional)
+- `OPENAI_API_KEY` or `AI_GATEWAY_API_KEY`: For OpenAI API integration
+- `GPT_MODEL`: OpenAI model to use (default: gpt-4)
+- `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings
 
-## Claude API Integration
+**Database:**
+- `SUPABASE_URL`: Supabase project URL
+- `SUPABASE_KEY` or `SUPABASE_PUBLISHABLE_KEY`: Supabase public/anon key
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key (for admin operations)
+- `DATABASE_URL` or `SUPABASE_DB_URL`: Direct PostgreSQL connection string for migrations
+
+Always verify required environment variables are set before using them and throw clear errors if missing.
+
+## AI Integration
+
+### Claude API Integration
 
 - Default model: `claude-3-5-sonnet-20241022`
 - Use the `lib/claude.ts` module for all Claude API interactions
@@ -140,6 +151,22 @@ Always verify these are set before using them and throw clear errors if missing.
 - Default max_tokens: 1024 (adjust based on use case)
 - Always handle API errors gracefully
 - Check for empty responses and handle appropriately
+
+### OpenAI API Integration
+
+- Used in `pages/api/match-explanation.ts` for streaming responses
+- Supports both `OPENAI_API_KEY` and `AI_GATEWAY_API_KEY` environment variables
+- Default model from `GPT_MODEL` env var (default: gpt-4)
+- Implements Server-Sent Events (SSE) for streaming
+- Use for embeddings via `lib/embeddings.ts`
+
+### Choosing Between APIs
+
+The application supports both OpenAI and Claude APIs:
+- Use Claude for general AI completions and conversations
+- Use OpenAI for embeddings and streaming match explanations
+- Check for appropriate API keys before making requests
+- Handle missing API keys with clear error messages
 
 ## Testing and Build
 
@@ -161,12 +188,14 @@ Always verify these are set before using them and throw clear errors if missing.
 
 ### Streaming Responses
 
-For streaming AI responses (like in `MatchExplanation.tsx`):
-- Use Server-Sent Events (SSE) format
+For streaming AI responses (implemented in `pages/api/match-explanation.ts`):
+- Use Server-Sent Events (SSE) format with OpenAI streaming API
+- Set appropriate headers: `Content-Type: text/event-stream`, `Cache-Control: no-cache`
 - Send data as `data: {json}\n\n`
-- Handle cleanup with cancelled flags in useEffect
+- Handle cleanup with cancelled flags in useEffect (client-side)
 - Decode stream chunks with TextDecoder
 - Handle partial lines properly (keep buffer of incomplete data)
+- The `MatchExplanation.tsx` component consumes this streaming API
 
 ### Database Queries with Supabase
 
