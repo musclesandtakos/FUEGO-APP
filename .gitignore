@@ -1,88 +1,110 @@
 # Environment files
 .env
-.env.local
 .env.*.local
-.env.test
-.env.production
+.env.local
 
 # Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
+.pnpm-debug.log*
 package-lock.json
-.pnpm-debug.log
+.pnp
+.pnp.js
 
-# Build output
+# Build outputs
 dist/
 build/
 out/
-.next/
+coverage/
+.nyc_output/
+.tmp/
 .cache/
+*.bundle.js
+*.map
+
+# Frameworks
+.next/
+.nuxt/
+/.cache/
+/.parcel-cache/
 public/build/
-
-# VSCode
-.vscode/
-.history/
-
-# JetBrains
-.idea/
-*.iml
-
-# macOS
-.DS_Store
-
-# Swap files
-*.swp
-
-# Windows
-Thumbs.db
-desktop.ini
 
 # Logs
 logs/
 *.log
+yarn-error.log
+pnpm-debug.log
 debug.log*
-pids/
-*.pid
-*.seed
-*.pid.lock
 
-# Coverage
-coverage/
-*.lcov
+# OS files
+.DS_Store
+Thumbs.db
 
-# Test
-jest-cache/
-jest.config.*.cache
+# Temporary / swap files
+*.swp
+*~
+*.tmp
 
-# TypeScript
-*.tsbuildinfo
+# Editor/IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.iml
 
-# Parcel, Rollup, Webpack
-.parcel-cache/
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+build/
+dist/
+venv/
+ENV/
+env/
+env.bak/
+
+# Ruby
+*.gem
+*.rbc
+.bundle/
+vendor/bundle/
+tmp/
+.byebug_history
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+
+# Go
+bin/
+obj/
+*.exe
+*.test
 
 # Docker
 docker-compose.override.yml
 docker-compose.*.yml
 
 # Misc
-*.zip
-*.tar.gz
-.svelte-kit/
-.cargo/
-build-info/
+coverage/
+reports/
+.idea/
+.vagrant/
+*.env.backup
+.sass-cache/
 
-# Ignore local secrets or files created by devs
-.local/
-.secret
-.credentials
-
-# Gitleaks reports
-gitleaks-report.json
-gitleaks*.json
-
-# Dry-run secret detection reports and replacements
-report-*.txt
-replacements.txt
+# Secrets (catch-all)
+*.key
+*.pem
+*.crt
