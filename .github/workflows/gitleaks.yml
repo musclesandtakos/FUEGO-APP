@@ -38,4 +38,8 @@ jobs:
       - name: Fail on high-severity secrets
         if: always()
         run: |
-          jq '.[] | select(.severity == "high")' gitleaks-report.json | grep . && echo "High severity leak(s) found — failing job" && exit 1 || echo "No high severity leaks"
+          if [ -f gitleaks-report.json ]; then
+            jq '.[] | select(.severity == "high")' gitleaks-report.json | grep . && echo "High severity leak(s) found — failing job" && exit 1 || echo "No high severity leaks"
+          else
+            echo "No report file - skipping severity check"
+          fi
