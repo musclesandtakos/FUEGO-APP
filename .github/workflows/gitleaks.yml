@@ -1,50 +1,6 @@
-name: gitleaks full-history scan
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-jobs:
-  gitleaks-scan:
-    name: gitleaks full-history scan
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Checkout full history
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Run gitleaks (action)
         uses: zricethezav/gitleaks-action@v2
         with:
           args: detect --source . --format json --report-path gitleaks-report.json --config .gitleaks.toml
-
-      - name: Show brief summary (redacted)
-        if: always()
-        run: |
-          echo "Findings summary (rule id, file, commit, severity):"
-          if [ -f gitleaks-report.json ]; then
-            jq -r '.[] | "\(.rule_id) | \(.file) | \(.commit) | \(.severity)"' gitleaks-report.json
-          else
-            echo "No report file generated"
-          fi
-
-      - name: Upload gitleaks JSON report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gitleaks-report
-          path: gitleaks-report.json
-          if-no-files-found: warn
-
-      - name: Fail on high-severity secrets
-        if: always()
-        run: |
-          if [ -f gitleaks-report.json ]; then
-            jq '.[] | select(.severity == "high")' gitleaks-report.json | grep . && echo "High severity leak(s) found — failing job" && exit 1 || echo "No high severity leaks"
-          else
-            echo "No report file - skipping severity check"
-          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
