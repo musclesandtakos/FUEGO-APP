@@ -159,3 +159,22 @@ FUEGO-APP/
 ├── tsconfig.json      # TypeScript configuration
 └── next.config.js     # Next.js configuration
 ```
+
+## Environment variables
+
+This project uses environment variables for database connections, API keys, and other secrets.
+
+To get started locally:
+
+1. Copy the example file:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Edit `.env.local` and replace the `REPLACE_WITH_*` placeholders with your real credentials (for example, your database password or Supabase keys).
+
+3. Keep `.env.local` out of version control — it should never be committed. The repository provides `.env.example` with placeholders so contributors know what keys are required.
+
+Notes:
+- For production and CI, add environment variables using your host's secret management (Vercel, Netlify, GitHub Actions Secrets, etc.).
+- If you use a Postgres database with Prisma, set `DATABASE_URL` in `.env.local` before running migrations.
