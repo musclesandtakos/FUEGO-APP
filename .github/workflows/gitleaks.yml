@@ -25,7 +25,11 @@ jobs:
         if: always()
         run: |
           echo "Findings summary (rule id, file, commit, severity):"
-          jq -r '.[] | "\(.rule_id) | \(.file) | \(.commit) | \(.severity)"' gitleaks-report.json || echo "No findings or jq not installed"
+          if [ -f gitleaks-report.json ]; then
+            jq -r '.[] | "\(.rule_id) | \(.file) | \(.commit) | \(.severity)"' gitleaks-report.json
+          else
+            echo "No report file generated"
+          fi
 
       - name: Upload gitleaks JSON report
         if: always()
