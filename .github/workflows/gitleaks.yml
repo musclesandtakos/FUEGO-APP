@@ -33,6 +33,7 @@ jobs:
         with:
           name: gitleaks-report
           path: gitleaks-report.json
+          if-no-files-found: warn
 
       - name: Fail on high-severity secrets
         if: always()
