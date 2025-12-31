@@ -10,15 +10,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const prompt = [
-        `You are a friendly match assistant.`,
-        `Explain in 2-3 short paragraphs why ${profileAName} and ${profileBName} would be a good match based on these likes:`,
-        `${profileAName}: ${profileALikes.join(', ')}`,
-        `${profileBName}: ${profileBLikes.join(', ')}`,
-        `Keep the tone positive and mention common interests.`
-      ].join('\n\n')
-
-      // Fetch AI-generated match explanation from the API endpoint
+      // Stream AI-generated match explanation from the API endpoint
       try {
         const response = await fetch('/api/match-explanation', {
           method: 'POST',
