@@ -21,6 +21,8 @@ jobs:
         uses: zricethezav/gitleaks-action@v2
         with:
           args: detect --source . --format json --report-path gitleaks-report.json --config .gitleaks.toml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Show brief summary (redacted)
         if: always()
