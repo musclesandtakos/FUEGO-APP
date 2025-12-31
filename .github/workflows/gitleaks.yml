@@ -1,6 +1,6 @@
-      - name: Run gitleaks (action)
-        uses: zricethezav/gitleaks-action@v2
-        with:
-          args: detect --source . --format json --report-path gitleaks-report.json --config .gitleaks.toml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+- name: Run Gitleaks
+  uses: zricethezav/gitleaks-action@v4
+  with:
+    args: --path=./
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
