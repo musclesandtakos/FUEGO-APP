@@ -82,3 +82,7 @@ build-info/
 # Gitleaks reports
 gitleaks-report.json
 gitleaks*.json
+
+# Dry-run secret detection reports and replacements
+report-*.txt
+replacements.txt
