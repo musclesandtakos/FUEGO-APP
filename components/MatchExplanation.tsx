@@ -18,12 +18,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
         `Keep the tone positive and mention common interests.`
       ].join('\n\n')
 
-      // Simple implementation without streaming for now
-      // In a real implementation, you would call an API endpoint that handles the AI request
-      setText('Match explanation will be generated via AI when properly configured with API endpoints.')
-      
-      // TODO: Implement streaming with proper AI SDK setup
-      // This requires setting up an API route that handles the AI request
+      // Fetch AI-generated match explanation from the API endpoint
       try {
         const response = await fetch('/api/match-explanation', {
           method: 'POST',
