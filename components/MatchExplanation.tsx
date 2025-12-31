@@ -10,6 +10,20 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   useEffect(() => {
     let cancelled = false
     ;(async () => {
+      const prompt = [
+        `You are a friendly match assistant.`,
+        `Explain in 2-3 short paragraphs why ${profileAName} and ${profileBName} would be a good match based on these likes:`,
+        `${profileAName}: ${profileALikes.join(', ')}`,
+        `${profileBName}: ${profileBLikes.join(', ')}`,
+        `Keep the tone positive and mention common interests.`
+      ].join('\n\n')
+
+      // Simple implementation without streaming for now
+      // In a real implementation, you would call an API endpoint that handles the AI request
+      setText('Match explanation will be generated via AI when properly configured with API endpoints.')
+      
+      // TODO: Implement streaming with proper AI SDK setup
+      // This requires setting up an API route that handles the AI request
       try {
         const response = await fetch('/api/match-explanation', {
           method: 'POST',
