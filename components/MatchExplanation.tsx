@@ -1,11 +1,11 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { streamText } from 'ai'
 
 export default function MatchExplanation({ profileAName, profileALikes, profileBName, profileBLikes }: {
   profileAName: string, profileALikes: string[], profileBName: string, profileBLikes: string[]
 }) {
   const [text, setText] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -18,18 +18,65 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
         `Keep the tone positive and mention common interests.`
       ].join('\n\n')
 
-      const stream = await streamText({
-        model: process.env.NEXT_PUBLIC_GPT_MODEL || 'openai/gpt-5',
-        prompt
-      })
-
+      // Simple implementation without streaming for now
+      // In a real implementation, you would call an API endpoint that handles the AI request
+      setText('Match explanation will be generated via AI when properly configured with API endpoints.')
+      
+      // TODO: Implement streaming with proper AI SDK setup
+      // This requires setting up an API route that handles the AI request
       try {
-        for await (const chunk of stream) {
-          if (cancelled) break
-          setText((t) => t + chunk)
+        const response = await fetch('/api/match-explanation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            profileAName,
+            profileALikes,
+            profileBName,
+            profileBLikes
+          })
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch match explanation')
+        }
+
+        const reader = response.body?.getReader()
+        const decoder = new TextDecoder()
+
+        if (!reader) {
+          throw new Error('No response body')
+        }
+
+        let buffer = ''
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done || cancelled) break
+
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          
+          // Keep the last incomplete line in the buffer
+          buffer = lines.pop() || ''
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6))
+                if (data.content) {
+                  setText((t) => t + data.content)
+                }
+              } catch (e) {
+                // Skip malformed JSON
+              }
+            }
+          }
         }
       } catch (e) {
         console.error(e)
+        setError('Error generating explanation')
       }
     })()
 
@@ -39,7 +86,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   return (
     <div>
       <h3>Why this is a match</h3>
-      <div>{text || 'Generating...'}</div>
+      <div>{error || text || 'Generating...'}</div>
     </div>
   )
 }
