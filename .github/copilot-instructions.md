@@ -175,13 +175,30 @@ The application supports both OpenAI and Claude APIs:
 - Check for appropriate API keys before making requests
 - Handle missing API keys with clear error messages
 
-## Testing and Build
+## Development Workflow
+
+### Available Commands
+
+- `npm run dev` - Start the Next.js development server on http://localhost:3000
+- `npm run build` - Build the application for production
+- `npm run start` - Start the production server (after building)
+- `npm run migrate` - Run SQL migrations to set up the database
+- `npm run verify` - Verify Supabase/database setup is correct
+
+### Linting
+
+- ESLint is configured with `next/core-web-vitals` preset
+- TypeScript strict mode is enabled
+- Always fix linting errors before committing code
+- Run `npx next lint` to check for linting issues
+
+### Testing and Build
 
 - Run SQL migrations: `npm run migrate`
 - Verify Supabase setup: `npm run verify`
-- Ensure all TypeScript files compile without errors
-- Test API endpoints thoroughly
-- Validate environment variables are properly configured
+- Build the application: `npm run build` to ensure all TypeScript files compile without errors
+- Test API endpoints thoroughly using curl, Postman, or similar tools
+- Validate environment variables are properly configured before running
 
 ## Documentation
 
@@ -250,3 +267,138 @@ For streaming AI responses (implemented in `pages/api/match-explanation.ts`):
 - Privacy and user consent are core values of the application
 - Follow existing patterns when adding new features
 - Maintain consistency with the codebase style
+
+## Common Tasks and Examples
+
+### Creating a New API Endpoint
+
+When creating a new API endpoint, follow this pattern:
+
+```typescript
+// pages/api/your-endpoint.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // 1. Validate HTTP method
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  try {
+    // 2. Validate request body
+    if (!req.body || typeof req.body !== 'object') {
+      return res.status(400).json({ error: 'Invalid request body' })
+    }
+    
+    // 3. Validate required fields with types
+    const { requiredField } = req.body
+    if (!requiredField || typeof requiredField !== 'string') {
+      return res.status(400).json({ error: 'requiredField (string) is required' })
+    }
+
+    // 4. Process request
+    const result = await yourBusinessLogic(requiredField)
+    
+    // 5. Return success response
+    res.json({ result })
+  } catch (err: any) {
+    // 6. Log and return error
+    console.error('API error:', err)
+    res.status(500).json({ error: err.message || String(err) })
+  }
+}
+```
+
+### Working with the Database
+
+```typescript
+// Query the database with Supabase
+import { supabase } from '../../lib/supabase'
+
+// Fetch data with RLS applied
+const { data, error } = await supabase
+  .from('profiles')
+  .select('*')
+  .eq('consent_to_matching', true)
+
+// Check for errors
+if (error) {
+  console.error('Database error:', error)
+  throw new Error('Failed to fetch profiles')
+}
+```
+
+### Using Claude API
+
+```typescript
+// Get a simple completion from Claude
+import { getClaudeCompletion } from '../../lib/claude'
+
+const response = await getClaudeCompletion(
+  'Your prompt here',
+  'claude-3-5-sonnet-20241022',
+  1024
+)
+```
+
+### Generating Embeddings
+
+```typescript
+// Generate vector embeddings for text
+import { getEmbedding } from '../../lib/embeddings'
+
+const embedding = await getEmbedding('User interests text')
+// Returns: number[] (array of floats)
+```
+
+### Running Database Migrations
+
+1. Create a new SQL file in the `sql/` directory
+2. Make it idempotent using `DO $$ ... END $$` blocks for DDL
+3. Add the filename to the `files` array in `scripts/run-sql.js`
+4. Run with `npm run migrate`
+
+Example migration structure:
+```sql
+-- Idempotent table creation
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'your_table') THEN
+    CREATE TABLE your_table (
+      id UUID PRIMARY KEY,
+      -- columns here
+    );
+  END IF;
+END $$;
+
+-- Enable RLS
+ALTER TABLE your_table ENABLE ROW LEVEL SECURITY;
+
+-- Create policy
+DROP POLICY IF EXISTS "policy_name" ON your_table;
+CREATE POLICY "policy_name" ON your_table
+  FOR SELECT
+  USING (consent_to_matching = true);
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Missing environment variables**: Ensure all required variables are set in `.env`
+   - Check `process.env.VARIABLE_NAME` and throw descriptive errors if missing
+   
+2. **Database connection errors**: Verify `DATABASE_URL` or `SUPABASE_DB_URL` is correct
+   - Run `npm run verify` to check database setup
+   
+3. **API key errors**: Ensure API keys are valid and not expired
+   - Check that keys are properly set in environment variables
+   - Never commit actual keys to the repository
+   
+4. **TypeScript errors**: Run `npm run build` to check for type errors
+   - Fix type annotations and interfaces as needed
+   
+5. **RLS Policy Issues**: If queries return no data, check:
+   - RLS policies are correctly configured
+   - User has proper permissions
+   - `consent_to_matching` flag is set correctly
