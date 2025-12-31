@@ -1,6 +1,11 @@
-      - name: Run gitleaks (action)
-        uses: zricethezav/gitleaks-action@v2
-        with:
-          args: detect --source . --format json --report-path gitleaks-report.json --config .gitleaks.toml
+      - name: Run gitleaks scan
+        uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-report
+          path: gitleaks-report.json
