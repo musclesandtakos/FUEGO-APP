@@ -6,6 +6,12 @@ title = "FUEGO-APP gitleaks config (starter)"
 regexes = [
   '''example@example\.com'''
 ]
+# Exclude certain file paths from scanning
+paths = [
+  '''node_modules/''',
+  '''\.git/''',
+  '''\.github/'''
+]
 
 # Generic rules
 [[rules]]
@@ -44,12 +50,3 @@ id = "generic-secret"
 description = "Generic long secret (>= 40 chars) in quotes"
 regex = '''["']([A-Za-z0-9/+=_-]{40,})["']'''
 tags = ["secret","generic"]
-
-# Reduce false positives by excluding certain file paths (optional)
-[config]
-allowed_extensions = ["json","js","ts","tsx","py","go","rb","env","sh","yaml","yml","toml"]
-ignore_paths = [
-  "node_modules/**",
-  ".git/**",
-  ".github/**"
-]
