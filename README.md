@@ -100,11 +100,10 @@ The application provides the following API endpoints:
 - **POST /api/find-matches-cursor** - Find matches using cursor-based pagination
 - **POST /api/find-matches-paginated** - Find matches with standard pagination
 - **POST /api/secure-find-matches** - Find matches with authentication (requires service role)
-2. Update the `.env` file with your actual API keys:
-   - `AI_GATEWAY_API_KEY`: Your AI Gateway API key
-   - `ANTHROPIC_API_KEY`: Your Anthropic Claude API key (get from https://console.anthropic.com/)
+- **POST /api/claude-chat** - Send prompts to Claude AI for completions
+- **GET /api/mcp-config** - Get the MCP (Model Context Protocol) configuration
 
-**Important**: Never commit your `.env` file or expose API keys in the repository. The `.env` file is already included in `.gitignore`.
+See individual API files in `pages/api/` for detailed usage examples.
 
 ## Features
 
@@ -135,6 +134,39 @@ curl -X POST http://localhost:3000/api/claude-chat \
 ```
 
 See `pages/api/claude-chat.ts` for a complete example of how to create a Claude-powered API endpoint.
+
+### MCP (Model Context Protocol) Configuration
+
+This application includes MCP server configuration for GitHub Copilot integration. The configuration is stored in `mcp.json` and defines MCP servers that can be used with compatible AI tools.
+
+**Viewing your MCP configuration:**
+
+```bash
+# Using the API endpoint
+curl http://localhost:3000/api/mcp-config
+```
+
+**Example response:**
+
+```json
+{
+  "config": {
+    "mcpServers": {
+      "ai-elements": {
+        "command": "npx",
+        "args": ["-y", "mcp-remote", "https://registry.ai-sdk.dev/api/mcp"]
+      }
+    }
+  },
+  "configPath": "mcp.json",
+  "description": "Model Context Protocol (MCP) server configuration for GitHub Copilot",
+  "endpoint": "api.githubcopilot.com/mcp"
+}
+```
+
+The MCP configuration allows GitHub Copilot and other AI tools to access additional context and capabilities through the configured MCP servers.
+
+For detailed information about MCP configuration, see [docs/MCP_CONFIG.md](docs/MCP_CONFIG.md).
 
 ## Security
 
