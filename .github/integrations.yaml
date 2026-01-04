@@ -1,0 +1,9 @@
+# coderabbit integration config
+early_access: true
+reviews:
+  profile: assertive
+  review_status: false
+  request_changes_workflow: true
+  fail_commit_status: true
+  auto_apply_labels: true
+  auto_assign_reviewers: true
