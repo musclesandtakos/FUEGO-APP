@@ -20,7 +20,7 @@ jobs:
       - name: Run gitleaks (action)
         uses: zricethezav/gitleaks-action@v2
         with:
-          args: detect --source . --format json --report-path gitleaks-report.json --config .gitleaks.toml
+          args: detect --source . --report-format json --report-path gitleaks-report.json --config .gitleaks.toml
 
       - name: Show brief summary (redacted)
         if: always()
