@@ -1,6 +1,18 @@
-- name: Run Gitleaks
-  uses: zricethezav/gitleaks-action@v4
-  with:
-    args: --path=./
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: Run Gitleaks
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2.3.9
