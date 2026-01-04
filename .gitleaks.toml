@@ -4,7 +4,27 @@ title = "FUEGO-APP gitleaks config (starter)"
 [allowlist]
 # Example: ignore local dev email placeholder
 regexes = [
-  '''example@example\.com'''
+  '''example@example\.com''',
+  # Ignore placeholder postgres URLs in documentation
+  '''postgres://user:pass@host''',
+  '''postgres://user:password@host''',
+  '''postgres://<DB_USER>:<DB_PASS>@<DB_HOST>''',
+  '''postgres://secret''',
+  # Ignore placeholder Prisma API keys in documentation
+  '''your-prisma-data-platform-api-key''',
+  '''new-prisma-api-key''',
+  '''new_prisma_key''',
+  # Ignore development placeholder keys
+  '''SUPABASE_PUBLISHABLE_KEY_MISSING_DEVELOPMENT''',
+  # Ignore npm package integrity hashes (sha512-...)
+  '''sha512-[A-Za-z0-9+/=]+'''
+]
+
+# Also ignore specific files with placeholder secrets
+paths = [
+  '''\.env\.example$''',
+  '''README\.secrets\.md$''',
+  '''docs/DRY-RUN-SECRETS\.md$'''
 ]
 
 # Generic rules
@@ -51,5 +71,9 @@ allowed_extensions = ["json","js","ts","tsx","py","go","rb","env","sh","yaml","y
 ignore_paths = [
   "node_modules/**",
   ".git/**",
-  ".github/**"
+  ".github/**",
+  # Ignore lock files with package integrity hashes
+  "package-lock.json",
+  "pnpm-lock.yaml",
+  "yarn.lock"
 ]
