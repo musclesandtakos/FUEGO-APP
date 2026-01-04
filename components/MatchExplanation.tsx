@@ -10,6 +10,7 @@ export default function MatchExplanation({ profileAName, profileALikes, profileB
   useEffect(() => {
     let cancelled = false
     ;(async () => {
+      // Stream AI-generated match explanation from the API endpoint
       try {
         const response = await fetch('/api/match-explanation', {
           method: 'POST',
