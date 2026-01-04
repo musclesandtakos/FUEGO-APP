@@ -144,6 +144,17 @@ See `pages/api/claude-chat.ts` for a complete example of how to create a Claude-
 - If an API key is accidentally exposed, revoke it immediately and generate a new one
 - Row Level Security (RLS) policies are configured to protect user data
 
+## Code Review
+
+This repository uses [CodeRabbit](https://coderabbit.ai/) for AI-powered code reviews on pull requests. CodeRabbit automatically reviews all PRs and provides:
+
+- Security vulnerability detection
+- Code quality suggestions
+- Best practices enforcement
+- TypeScript and Next.js specific guidance
+
+See [docs/CODERABBIT.md](docs/CODERABBIT.md) for more information on using CodeRabbit.
+
 ## Project Structure
 
 ```
