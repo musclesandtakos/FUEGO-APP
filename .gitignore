@@ -23,6 +23,7 @@ coverage/
 .cache/
 *.bundle.js
 *.map
+*.tsbuildinfo
 
 # Frameworks
 .next/
