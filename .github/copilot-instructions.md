@@ -123,24 +123,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 ### API Key Management
 
-The application uses the following environment variables:
+The application uses the following environment variables (all documented in `.env.example`):
 
 **AI Services:**
 - `ANTHROPIC_API_KEY`: For Claude API integration (required for Claude features in `lib/claude.ts`)
-- `OPENAI_API_KEY`: For OpenAI API integration (required for embeddings in `lib/embeddings.ts` - not in `.env.example`, add if needed)
+- `OPENAI_API_KEY`: For OpenAI API integration (required for embeddings in `lib/embeddings.ts` and match explanations)
 - `AI_GATEWAY_API_KEY`: Alternative to `OPENAI_API_KEY` for match explanations (used in `pages/api/match-explanation.ts`)
 - `GPT_MODEL`: OpenAI model to use (optional, default: gpt-4)
 - `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings (optional, default: text-embedding-3-small)
 
 **Database:**
-- `SUPABASE_URL`: Supabase project URL (required - not in `.env.example`, add if needed)
-- `SUPABASE_KEY`: Supabase anon/public key (used in `lib/supabase.ts` - not in `.env.example`, add if needed)
-- `SUPABASE_PUBLISHABLE_KEY`: Alternative name for Supabase public key (used in `config.js` - not in `.env.example`, add if needed)
-- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key for admin operations (required for `secure-find-matches` endpoint - not in `.env.example`, add if needed)
-- `DATABASE_URL`: Direct PostgreSQL connection string (preferred for migrations via `npm run migrate` - not in `.env.example`, add if needed)
-- `SUPABASE_DB_URL`: Alternative to `DATABASE_URL` for migrations (fallback option)
+- `DATABASE_URL`: Direct PostgreSQL connection string (for migrations and server-side operations)
+- `SUPABASE_URL`: Supabase project URL (required)
+- `SUPABASE_KEY`: Supabase anon/public key (used in `lib/supabase.ts`)
+- `SUPABASE_PUBLISHABLE_KEY`: Alternative name for Supabase public key (used in `config.js`)
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key for admin operations (required for `secure-find-matches` endpoint)
 
-**Note**: The `.env.example` file only includes `AI_GATEWAY_API_KEY` and `ANTHROPIC_API_KEY`. Add other environment variables to your `.env` file as needed for the features you're using.
+**Other:**
+- `NEXT_PUBLIC_APP_URL`: Application URL for callbacks (optional, default: http://localhost:3000)
+- `NEXTAUTH_URL`: NextAuth URL for authentication (optional)
+- `NEXTAUTH_SECRET`: NextAuth secret for session encryption (optional)
+
+**Note**: Core environment variables are documented with placeholder values in `.env.example`, while some optional variables (like `AI_GATEWAY_API_KEY`, `GPT_MODEL`, `NEXT_PUBLIC_APP_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`) are included as commented examples. Copy `.env.example` to `.env` and replace the placeholders with your actual values.
 
 Always verify required environment variables are set before using them and throw clear errors if missing.
 
