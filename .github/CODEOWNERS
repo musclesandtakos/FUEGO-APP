@@ -1,0 +1,4 @@
+# Assign TypeScript files to the specified owner so auto_assign_reviewers works.
+# Owner: @musclesandtakos
+src/**/*.ts    @musclesandtakos
+*.ts           @musclesandtakos
