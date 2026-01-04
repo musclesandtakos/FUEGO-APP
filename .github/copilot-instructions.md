@@ -133,7 +133,7 @@ The application uses the following environment variables (all documented in `.en
 - `OPENAI_EMBEDDING_MODEL`: Model for generating embeddings (optional, default: text-embedding-3-small)
 
 **Database:**
-- `DATABASE_URL`: Direct PostgreSQL connection string (preferred for migrations via `npm run migrate`)
+- `DATABASE_URL`: Direct PostgreSQL connection string (for migrations and server-side operations)
 - `SUPABASE_URL`: Supabase project URL (required)
 - `SUPABASE_KEY`: Supabase anon/public key (used in `lib/supabase.ts`)
 - `SUPABASE_PUBLISHABLE_KEY`: Alternative name for Supabase public key (used in `config.js`)
@@ -144,7 +144,7 @@ The application uses the following environment variables (all documented in `.en
 - `NEXTAUTH_URL`: NextAuth URL for authentication (optional)
 - `NEXTAUTH_SECRET`: NextAuth secret for session encryption (optional)
 
-**Note**: All environment variables are documented with placeholder values in `.env.example`. Copy it to `.env` and replace the placeholders with your actual values.
+**Note**: Core environment variables are documented with placeholder values in `.env.example`, while some optional variables (like `AI_GATEWAY_API_KEY`, `GPT_MODEL`, `NEXT_PUBLIC_APP_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`) are included as commented examples. Copy `.env.example` to `.env` and replace the placeholders with your actual values.
 
 Always verify required environment variables are set before using them and throw clear errors if missing.
 
