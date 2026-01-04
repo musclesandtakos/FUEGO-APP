@@ -98,8 +98,7 @@ After reviewing the dry-run report:
 
 2. **If no secrets are found**:
    - You're good! The repository history is clean
-   - Consider setting up Gitleaks or similar tools for ongoing monitoring
-   - This repository already has `.github/workflows/gitleaks.yml` for continuous scanning
+   - Consider setting up secret scanning tools for ongoing monitoring
 
 ## Troubleshooting
 
