@@ -303,7 +303,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (err: any) {
     // 6. Log and return error
     console.error('API error:', err)
-    res.status(500).json({ error: err.message || String(err) })
+    res.status(500).json({ error: 'Internal server error' })
   }
 }
 ```
