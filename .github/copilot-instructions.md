@@ -190,7 +190,6 @@ The application supports both OpenAI and Claude APIs:
 - ESLint is configured with `next/core-web-vitals` preset
 - TypeScript strict mode is enabled
 - Always fix linting errors before committing code
-- Run `npx eslint .` to check for linting issues
 
 ### Testing and Build
 
