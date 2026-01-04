@@ -136,6 +136,23 @@ curl -X POST http://localhost:3000/api/claude-chat \
 
 See `pages/api/claude-chat.ts` for a complete example of how to create a Claude-powered API endpoint.
 
+## Model Context Protocol (MCP)
+
+This repository is configured to use the Model Context Protocol (MCP) for AI integrations. The configuration is in `mcp.json` and includes:
+
+- **GitHub Copilot MCP**: Access GitHub Copilot capabilities via `https://api.githubcopilot.com/mcp`
+- **AI Elements**: Additional AI SDK registry tools
+
+For detailed MCP configuration and usage instructions, see [docs/MCP_CONFIGURATION.md](docs/MCP_CONFIGURATION.md).
+
+### Quick Start with GitHub Copilot MCP
+
+To use GitHub Copilot's MCP endpoint:
+
+1. Ensure you have an active GitHub Copilot subscription
+2. Authenticate with GitHub CLI: `gh auth login`
+3. MCP-compatible tools will automatically detect the configuration
+
 ## Security
 
 - All API keys and secrets must be stored in environment variables
@@ -149,12 +166,15 @@ See `pages/api/claude-chat.ts` for a complete example of how to create a Claude-
 ```
 FUEGO-APP/
 ├── components/          # React components
+├── docs/               # Documentation files
+│   └── MCP_CONFIGURATION.md  # Model Context Protocol setup guide
 ├── lib/                # Utility libraries (Supabase client, embeddings)
 ├── pages/              # Next.js pages and API routes
 │   └── api/           # API endpoints
 ├── scripts/           # Database migration and verification scripts
 ├── sql/               # SQL migration files
 ├── .env.example       # Environment variable template
+├── mcp.json           # Model Context Protocol configuration
 ├── package.json       # Project dependencies
 ├── tsconfig.json      # TypeScript configuration
 └── next.config.js     # Next.js configuration

@@ -1,5 +1,13 @@
 {
   "mcpServers": {
+    "github-copilot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://api.githubcopilot.com/mcp"
+      ]
+    },
     "ai-elements": {
       "command": "npx",
       "args": [
