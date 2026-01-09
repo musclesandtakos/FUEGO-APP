@@ -1,0 +1,53 @@
+name: CI (staging)
+
+on:
+  push:
+    branches: [ "staging", "main" ]
+  pull_request:
+    branches: [ "staging", "main" ]
+
+jobs:
+  build-test:
+    name: Build and Test (uses DATABASE_URL from secrets)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure DATABASE_URL is set
+        run: |
+          if [ -z "${DATABASE_URL}" ]; then
+            echo "ERROR: DATABASE_URL is not set. Add it as a repository secret named DATABASE_URL."
+            exit 1
+          fi
+
+      - name: Build (if applicable)
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run DB migrations (optional)
+        if: env.DATABASE_URL != ''
+        run: |
+          echo "Running migrations (if you have a migration script)"
+          npm run migrate --if-present
+
+      - name: Upload test results (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs
+          path: |
+            ./test-results || true
