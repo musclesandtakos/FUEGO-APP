@@ -1,0 +1,81 @@
+# CodeRabbit configuration for FUEGO-APP
+# AI-powered code review for TypeScript/Next.js application
+
+language: "en-US"
+tone_instructions: "Be concise, technical, and security-focused. Highlight potential vulnerabilities."
+
+early_access: false
+enable_free_tier: true
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  
+  # Path-level configurations
+  path_filters:
+    - "!**/node_modules/**"
+    - "!**/*.lock"
+    - "!**/pnpm-lock.yaml"
+    - "!**/package-lock.json"
+    - "!.next/**"
+    - "!dist/**"
+    - "!build/**"
+  
+  path_instructions:
+    - path: "**/*.ts,**/*.tsx"
+      instructions: |
+        Review TypeScript code for:
+        - Type safety and proper type annotations
+        - Proper error handling
+        - Security vulnerabilities (SQL injection, XSS, API key exposure)
+        - Following Next.js best practices
+    
+    - path: "pages/api/**/*.ts"
+      instructions: |
+        Review API endpoints for:
+        - Proper HTTP method validation
+        - Request body validation
+        - Appropriate error handling with correct status codes
+        - Security: Never expose API keys or secrets
+        - Row Level Security (RLS) compliance
+        - Proper use of environment variables
+    
+    - path: "lib/**/*.ts"
+      instructions: |
+        Review utility libraries for:
+        - Proper error handling
+        - Type safety
+        - Security best practices
+        - API key validation before use
+    
+    - path: "sql/**/*.sql"
+      instructions: |
+        Review SQL migrations for:
+        - Idempotency (safe to run multiple times)
+        - Row Level Security (RLS) policies
+        - Proper use of pgvector extension
+        - No hardcoded credentials
+
+commands:
+  review: true
+
+# Exclude files from review
+paths:
+  exclude:
+    - "**/node_modules/**"
+    - "**/*.lock"
+    - "**/package-lock.json"
+    - "**/pnpm-lock.yaml"
+    - ".next/**"
+    - "dist/**"
+    - "build/**"
+    - ".env"
+    - ".env.*"
+    - ".coderabbit.yaml"
+    - "*.md"
