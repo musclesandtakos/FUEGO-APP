@@ -143,18 +143,40 @@ See `pages/api/claude-chat.ts` for a complete example of how to create a Claude-
 - Never commit actual API keys to the repository
 - If an API key is accidentally exposed, revoke it immediately and generate a new one
 - Row Level Security (RLS) policies are configured to protect user data
+- See [README.secrets.md](./README.secrets.md) for detailed guidance on managing secrets
+
+## Deployment
+
+### Vercel Deployment
+
+This application can be deployed to Vercel. For detailed instructions on setting up automated deployments with GitHub Actions, see:
+
+📖 **[Vercel Deployment Guide](./docs/VERCEL_DEPLOYMENT.md)**
+
+Key steps:
+1. Create a Vercel token from your Vercel account
+2. Store the token as a GitHub secret named `VERCEL_TOKEN`
+3. Configure environment variables in your Vercel project
+4. Set up GitHub Actions workflow for automated deployments
+
+**Important**: Never commit Vercel tokens or other deployment secrets to the repository.
 
 ## Project Structure
 
 ```
 FUEGO-APP/
 ├── components/          # React components
+├── docs/               # Documentation
+│   └── VERCEL_DEPLOYMENT.md  # Vercel deployment guide
 ├── lib/                # Utility libraries (Supabase client, embeddings)
 ├── pages/              # Next.js pages and API routes
 │   └── api/           # API endpoints
 ├── scripts/           # Database migration and verification scripts
 ├── sql/               # SQL migration files
 ├── .env.example       # Environment variable template
+├── README.md          # This file
+├── README.secrets.md  # Guide for managing secrets
+├── SECURITY.md        # Security policy
 ├── package.json       # Project dependencies
 ├── tsconfig.json      # TypeScript configuration
 └── next.config.js     # Next.js configuration
