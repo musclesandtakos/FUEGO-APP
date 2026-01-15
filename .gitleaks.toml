@@ -10,7 +10,15 @@ regexes = [
 paths = [
   '''node_modules/.*''',
   '''\.git/.*''',
-  '''\.github/.*'''
+  '''dist/.*''',
+  '''build/.*''',
+  '''.*\.min\.js''',
+  '''.*\.lock$''',
+  '''yarn\.lock''',
+  '''package-lock\.json''',
+  '''.*\.test\..*''',
+  '''.*\.spec\..*'''
+]
 ]
 
 # Generic rules
