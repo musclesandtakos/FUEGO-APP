@@ -11,9 +11,12 @@
  */
 import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { Client } from 'pg'
 
-const sqlDir = path.resolve(process.cwd(), 'sql')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const sqlDir = path.resolve(__dirname, '..', 'sql')
 
 // Ordered SQL files to run
 const files = [

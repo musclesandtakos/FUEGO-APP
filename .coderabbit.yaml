@@ -1,0 +1,30 @@
+# CodeRabbit Configuration File
+# Learn more at https://docs.coderabbit.ai
+
+language: "en-US"
+early_access: false
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: true
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  tools:
+    shellcheck:
+      enabled: true
+    ruff:
+      enabled: true
+    markdownlint:
+      enabled: true
+    github-checks:
+      enabled: true
+    languagetool:
+      enabled: true
+      enabled_only: false
+      level: "default"
+chat:
+  auto_reply: true
